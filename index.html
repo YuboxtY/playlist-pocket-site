@@ -1,11 +1,65 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Playlist Pocket</title>
-<style>body{font-family:system-ui,sans-serif;max-width:42rem;margin:2rem auto;padding:0 1rem;line-height:1.6}</style></head>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101715">
+  <meta name="description" content="Descarga e instala Melo para Android.">
+  <title>Descargar Melo para Android</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; display: grid; place-items: center;
+      padding: 24px; background: radial-gradient(ellipse at 50% 0%, #203e33, #101715 65%);
+      color: #f2faf6; line-height: 1.5; }
+    main { max-width: 430px; width: 100%; padding: clamp(22px, 6vw, 36px);
+      background: #17231e; border: 1px solid #365044; border-radius: 24px; }
+    h1 { margin: 0; font-size: clamp(48px, 12vw, 65px); letter-spacing: -.06em; line-height: 1; }
+    .platform { margin: 8px 0 24px; color: #b6ccbf; }
+    .download { display: block; padding: 14px 18px; border-radius: 12px; text-align: center;
+      color: #042319; background: #43e7aa; text-decoration: none; font-weight: 750; }
+    .download:hover { background: #77f1c3; }
+    a:focus-visible { outline: 2px solid #f2faf6; outline-offset: 4px; }
+    ol { padding-inline-start: 22px; margin: 24px 0 20px; }
+    li + li { margin-top: 6px; }
+    footer { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-top: 16px;
+      border-top: 1px solid #365044; font-size: .85rem; }
+    footer a { color: #b6ccbf; }
+  </style>
+</head>
 <body>
-<h1>Playlist Pocket</h1>
-<p>Playlist Pocket es una aplicación para Android que importa playlists públicas de Spotify, descarga su audio en el teléfono y permite escucharlas con o sin conexión. Opcionalmente guarda copias de respaldo en la nube del propio usuario (Google Drive, OneDrive o Telegram).</p>
-<p>Todo el procesamiento ocurre en el teléfono. La aplicación no usa servidores propios.</p>
-<p><a href="privacy.html">Política de privacidad</a> · <a href="terms.html">Condiciones del servicio</a></p>
-<p>Contacto: c02uenta02@gmail.com</p>
-</body></html>
+  <main>
+    <h1>Melo</h1>
+    <p class="platform">Para Android</p>
+    <a class="download" id="download" href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK</a>
+    <ol>
+      <li>Abre el archivo descargado.</li>
+      <li>Si Android te lo pide, permite instalar desde tu navegador y confirma la instalación.</li>
+      <li>Si ya tienes Melo, instala encima para conservar tu biblioteca.</li>
+    </ol>
+    <footer>
+      <a href="privacy.html">Privacidad</a>
+      <a href="terms.html">Condiciones</a>
+    </footer>
+  </main>
+  <script>
+    const repository = 'YuboxtY/melo-updates';
+    fetch('https://raw.githubusercontent.com/' + repository + '/main/latest.json')
+      .then(response => response.ok ? response.json() : null)
+      .then(release => {
+        if (!release || !/^v\d+\.\d+\.\d+$/.test(release.tag_name) ||
+            release.draft !== false || release.prerelease !== false ||
+            !Array.isArray(release.assets)) return;
+        const version = release.tag_name.slice(1);
+        const filename = 'Melo-' + version + '-android-arm64.apk';
+        const expected = 'https://github.com/' + repository +
+          '/releases/download/' + release.tag_name + '/' + filename;
+        if (release.assets.some(asset => asset && asset.name === filename &&
+            asset.browser_download_url === expected)) {
+          document.getElementById('download').href = expected;
+        }
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
