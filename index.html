@@ -3,197 +3,463 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101514">
-  <meta name="description" content="Descubre música, organiza tus playlists y guarda tus favoritas para escucharlas sin conexión. Descarga Melo para Android.">
-  <title>Melo · Tu música va contigo</title>
+  <meta name="theme-color" content="#0c1110">
+  <meta name="description" content="Melo, el reproductor para Android. Pruébalo aquí: busca, reproduce y arma tu biblioteca.">
+  <title>Melo · Pruébalo aquí</title>
   <link rel="icon" href="media/melo.png" type="image/png">
+  <link rel="preload" href="fonts/plus-jakarta.woff2" as="font" type="font/woff2" crossorigin>
   <style>
+    @font-face { font-family: "Plus Jakarta Sans"; src: url("fonts/plus-jakarta.woff2") format("woff2");
+      font-weight: 400 800; font-display: swap; }
     :root {
       color-scheme: dark;
-      font-family: Inter, system-ui, sans-serif;
-      --background: #101514;
-      --surface: #18201e;
-      --text: #f0f6f2;
-      --muted: #b3c4bc;
-      --mint: #4de9ad;
-      --line: #304039;
+      --bg: #0c1110; --panel: #111a18; --panel-2: #16211e; --line: #25332f;
+      --text: #eef5f1; --muted: #93a8a0; --mint: #4de9ad; --mint-ink: #062a1b;
+      --tint: #1b3a30;
+      --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--background); color: var(--text); line-height: 1.55; }
-    img { display: block; max-width: 100%; height: auto; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 500 1rem/1.5 var(--font); overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
     a { color: inherit; }
-    a:focus-visible { outline: 2px solid var(--mint); outline-offset: 5px; }
-    .container { width: min(1120px, calc(100% - 56px)); margin-inline: auto; }
-    .masthead { border-bottom: 1px solid var(--line); }
-    .masthead .container, footer .container {
-      display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 16px;
-    }
-    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 1.3rem;
-      font-weight: 780; letter-spacing: -.045em; text-decoration: none; }
-    .brand img { width: 38px; height: 38px; border-radius: 10px; }
-    nav { display: flex; align-items: center; gap: 24px; color: var(--muted); }
-    nav a, footer a { text-decoration: none; }
-    nav a:hover, footer a:hover { color: var(--text); text-decoration: underline; }
-    .hero { overflow: hidden; border-bottom: 1px solid var(--line);
-      background: radial-gradient(ellipse at 77% 48%, #1d4538 0, #101514 53%); }
-    .hero .container { min-height: 618px; display: grid; grid-template-columns: minmax(0, 1.07fr) minmax(0, .93fr);
-      align-items: center; gap: 50px; padding-block: 54px; }
-    .hero h1 { max-width: 670px; font-size: clamp(3.3rem, 7.2vw, 7.2rem); font-weight: 780;
-      line-height: .96; letter-spacing: -.08em; margin: 0; text-wrap: balance; }
-    .hero h1 span { display: block; color: var(--mint); }
-    .hero p { color: var(--muted); max-width: 34rem; font-size: clamp(1.04rem, 2vw, 1.25rem);
-      margin: 25px 0 28px; }
-    .download { display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
-      padding: 12px 24px; border-radius: 12px; text-align: center;
-      color: #08251a; background: var(--mint); text-decoration: none; font-weight: 760; }
-    .download:hover { background: #8df4c9; }
-    .hero .version { display: block; min-height: 1.4em; margin-top: 10px; font-size: .85rem; color: var(--muted); }
-    .showcase { margin: 0; display: grid; justify-items: center; }
-    .device { width: min(100%, 260px); padding: 6px; border-radius: 30px; border: 1px solid #527267;
-      background: #0b100e; box-shadow: 0 26px 56px #05100b92; }
-    .device img { width: 100%; border-radius: 23px; }
-    .showcase figcaption { margin-top: 13px; color: var(--muted); font-size: .84rem; text-align: center; }
-    .features { padding-block: clamp(54px, 8vw, 90px); }
-    h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 750; line-height: 1.05;
-      letter-spacing: -.055em; margin: 0 0 24px; }
-    .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-    .feature { margin: 0; min-width: 0; display: grid; grid-template-columns: .8fr 1fr; gap: 14px;
-      grid-template-rows: auto; align-items: center; min-height: 352px;
-      padding: 25px 0 0 25px; border-radius: 20px; border: 1px solid var(--line); overflow: hidden;
-      background: radial-gradient(ellipse at bottom right, #213c34, var(--surface) 65%); }
-    .feature h3 { margin: 0 0 7px; font-size: clamp(1.25rem, 2.6vw, 2rem);
-      letter-spacing: -.04em; line-height: 1.15; }
-    .feature p { margin: 0; color: var(--muted); }
-    .feature img { width: min(95%, 238px); align-self: start; justify-self: end;
-      border-radius: 20px 20px 0 0; border: 1px solid #476359; border-bottom: 0;
-      margin: 0 10px 0 0; }
-    .install { background: var(--surface); border-block: 1px solid var(--line); }
-    .install .container { display: grid; grid-template-columns: 1fr 1fr; align-items: center;
-      gap: 32px; padding-block: clamp(40px, 7vw, 70px); }
-    .install p { max-width: 37ch; margin: 0 0 20px; color: var(--muted); }
-    .install ol { margin: 0; padding-left: 22px; color: var(--muted); }
-    .install li { padding: 7px 0 7px 5px; }
-    .install li::marker { color: var(--mint); font-weight: bold; }
-    footer { color: var(--muted); font-size: .86rem; }
-    footer .links { display: flex; flex-wrap: wrap; gap: 10px 18px; }
-    @media (max-width: 860px) {
-      .hero .container { min-height: 0; gap: 25px; }
-      .feature { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
-        padding: 21px 20px 0; gap: 16px; }
-      .feature img { align-self: center; margin: 0; width: min(100%, 225px); }
+    :focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 6px; }
+    .wrap { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800;
+      font-size: 1.25rem; letter-spacing: -.03em; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 28px;
+      border-radius: 14px; background: var(--mint); color: var(--mint-ink); font-weight: 800; text-decoration: none;
+      transition: transform .2s, box-shadow .2s; box-shadow: 0 10px 30px -10px #4de9ad88; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -10px #4de9adaa; }
+    .top .btn { min-height: 42px; padding: 0 20px; font-size: .92rem; border-radius: 12px; }
+
+    .hero { text-align: center; padding: clamp(36px, 7vw, 84px) 0 clamp(28px, 5vw, 56px); }
+    h1 { font-weight: 800; font-size: clamp(2.7rem, 8.4vw, 6.8rem); line-height: .98; letter-spacing: -.04em; word-spacing: .06em; margin: 0 auto;
+      max-width: 12ch; text-wrap: balance; }
+    h1 span { color: var(--mint); }
+    .hero .btn { margin-top: 34px; }
+    .version { display: block; margin-top: 12px; font-size: .85rem; color: var(--muted); min-height: 1.3em; }
+
+    /* Escenario interactivo */
+    .try { position: relative; padding: 8px 0 clamp(56px, 9vw, 110px); isolation: isolate; }
+    .try::before { content: ""; position: absolute; inset: -40px 0 0; z-index: -1; transition: background 1s;
+      background: radial-gradient(60% 55% at 50% 45%, color-mix(in srgb, var(--tint) 70%, transparent), transparent 75%); }
+    .hint { text-align: center; color: var(--muted); font-size: .95rem; margin: 0 0 30px; }
+    .stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; align-items: start; justify-items: center; }
+    .slot { --d: 0ms; display: grid; gap: 18px; justify-items: center; opacity: 0; transform: translateY(80px) scale(.95);
+      transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d); }
+    .slot.in { opacity: 1; transform: none; }
+    .slot:nth-child(2) { --d: 140ms; margin-top: 40px; }
+    .slot:nth-child(3) { --d: 280ms; margin-top: 80px; }
+    .slot h2 { margin: 0; font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; }
+    .float { transform: translateY(calc(var(--py, 0) * 1px)); transition: transform .2s linear; }
+
+    /* Teléfono */
+    .phone { width: 286px; height: 590px; border-radius: 38px; padding: 8px; background: #05080a;
+      box-shadow: 0 0 0 1px #2b3b36, 0 40px 70px -20px #000c, 0 0 80px -30px var(--tint); }
+    .screen { position: relative; height: 100%; border-radius: 31px; overflow: hidden; background: #0e1514;
+      display: flex; flex-direction: column; font-size: 13px; }
+    .bar { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; font-weight: 700; font-size: 14px; }
+    .bar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .scroll { flex: 1; overflow: auto; padding: 0 12px 12px; scrollbar-width: none; }
+    .scroll::-webkit-scrollbar { display: none; }
+    .search { display: flex; align-items: center; gap: 8px; margin: 0 4px 12px; padding: 0 12px; height: 40px;
+      background: #131d1b; border: 1px solid var(--line); border-radius: 12px; }
+    .search svg { width: 16px; height: 16px; fill: none; stroke: var(--muted); stroke-width: 2; flex: none; }
+    .search input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; color: var(--text); font: inherit; }
+    .search:focus-within { border-color: var(--mint); }
+    .label { margin: 8px 4px 6px; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .row { display: grid; grid-template-columns: 42px 1fr auto; gap: 10px; align-items: center; width: 100%; text-align: left;
+      padding: 7px; border-radius: 12px; transition: background .2s; }
+    .row:hover { background: #ffffff0b; }
+    .row.on { background: #4de9ad1a; }
+    .row img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; }
+    .row b { display: block; font-weight: 700; line-height: 1.2; }
+    .row small { color: var(--muted); font-size: 11.5px; }
+    .row .act { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); }
+    .row .act:hover { color: var(--mint); background: #ffffff10; }
+    .row .act svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+    .row .act.done { color: var(--mint); }
+    .eq { display: inline-flex; align-items: flex-end; gap: 2px; width: 14px; height: 13px; }
+    .eq i { flex: 1; background: var(--mint); height: 25%; border-radius: 1px; }
+    .live .eq i { animation: eq .8s ease-in-out infinite alternate; }
+    .eq i:nth-child(2) { animation-delay: -.25s; } .eq i:nth-child(3) { animation-delay: -.5s; }
+    @keyframes eq { to { height: 100%; } }
+    .empty { margin: 18px 6px; color: var(--muted); }
+
+    /* Reproductor */
+    .player { background: linear-gradient(180deg, var(--tint), #0b100f 70%); transition: background .8s; }
+    .player .from { text-align: center; padding: 16px 16px 4px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #cfe3da; }
+    .player .from b { display: block; font-size: 13px; letter-spacing: 0; text-transform: none; font-weight: 700; color: var(--text); }
+    .art { margin: 16px 22px 18px; aspect-ratio: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 18px 40px -10px #000a;
+      transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+    .art img { width: 100%; height: 100%; object-fit: cover; }
+    .playing .art { transform: scale(1.0); } .paused .art { transform: scale(.88); }
+    .meta { display: flex; align-items: center; justify-content: space-between; padding: 0 22px; gap: 8px; }
+    .meta b { display: block; font-size: 18px; letter-spacing: -.02em; line-height: 1.2; }
+    .meta span { color: #b7cbc2; font-size: 12.5px; }
+    .heart { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: #b7cbc2; flex: none; transition: transform .2s; }
+    .heart svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .heart.on { color: var(--mint); } .heart.on svg { fill: currentColor; }
+    .heart:active { transform: scale(1.3); }
+    .seek { padding: 14px 22px 0; }
+    .seek input { width: 100%; accent-color: var(--mint); height: 18px; cursor: pointer; margin: 0; }
+    .times { display: flex; justify-content: space-between; font-size: 11px; color: #b7cbc2; font-variant-numeric: tabular-nums; }
+    .ctrl { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 10px 14px; }
+    .ctrl button { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; color: #d6e6de; transition: .2s; }
+    .ctrl button:hover { color: var(--mint); }
+    .ctrl button.on { color: var(--mint); }
+    .ctrl svg { width: 22px; height: 22px; fill: currentColor; }
+    .ctrl .go { width: 60px; height: 60px; background: var(--mint); color: var(--mint-ink); }
+    .ctrl .go:hover { transform: scale(1.07); color: var(--mint-ink); }
+    .ctrl .go svg { width: 28px; height: 28px; }
+    .err { text-align: center; color: #ffb4a8; font-size: 11px; min-height: 14px; }
+
+    /* Biblioteca */
+    .lib h3 { margin: 0; padding: 14px 16px 2px; font-size: 20px; letter-spacing: -.03em; }
+    .lib p { margin: 0 16px 10px; color: var(--muted); font-size: 11.5px; }
+    .mini { margin: 0 10px 8px; padding: 7px; display: grid; grid-template-columns: 38px 1fr auto; gap: 10px; align-items: center;
+      background: #18241f; border: 1px solid var(--line); border-radius: 14px; }
+    .mini img { width: 38px; height: 38px; border-radius: 7px; }
+    .mini b { display: block; font-size: 12.5px; line-height: 1.2; } .mini small { color: var(--muted); font-size: 11px; }
+    .mini button { width: 34px; height: 34px; border-radius: 50%; background: var(--mint); color: var(--mint-ink); display: grid; place-items: center; }
+    .mini svg { width: 18px; height: 18px; fill: currentColor; }
+    .tabs { display: flex; justify-content: space-around; padding: 8px 6px 12px; border-top: 1px solid #1c2926; color: var(--muted); font-size: 10px; }
+    .tabs span { display: grid; justify-items: center; gap: 3px; }
+    .tabs svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+    .tabs .cur { color: var(--mint); }
+    .pl img { border-radius: 10px; }
+
+    /* Instalar */
+    .install { border-top: 1px solid var(--line); background: var(--panel); }
+    .install .wrap { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; padding-block: clamp(40px, 6vw, 72px); }
+    .install h2 { margin: 0 0 18px; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.04em; line-height: 1.05; }
+    .steps { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; counter-reset: s; color: var(--muted); }
+    .steps li { counter-increment: s; display: flex; align-items: center; gap: 10px; }
+    .steps li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; background: var(--panel-2);
+      border: 1px solid var(--line); display: grid; place-items: center; font-size: .8rem; font-weight: 800; color: var(--mint); }
+    .install .version { text-align: center; }
+
+    footer { padding-block: 26px 40px; color: var(--muted); font-size: .8rem; }
+    footer .wrap { display: grid; gap: 12px; }
+    footer .row2 { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: space-between; }
+    footer .links { display: flex; gap: 18px; } footer a { text-decoration: none; } footer a:hover { color: var(--text); text-decoration: underline; }
+    footer small { max-width: 90ch; line-height: 1.6; opacity: .8; }
+
+    @media (max-width: 980px) {
+      .stage { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding: 6px 24px 30px;
+        margin-inline: -24px; scrollbar-width: none; }
+      .stage::-webkit-scrollbar { display: none; }
+      .slot { flex: 0 0 auto; scroll-snap-align: center; margin-top: 0 !important; }
+      .install .wrap { grid-template-columns: 1fr; }
     }
     @media (max-width: 620px) {
-      .container { width: calc(100% - 36px); }
-      .masthead .container { padding-block: 12px; gap: 12px; }
-      nav { gap: 15px; font-size: .86rem; }
-      .hero .container, .install .container { grid-template-columns: minmax(0, 1fr); }
-      .hero .container { padding-block: 42px 34px; gap: 25px; }
-      .hero p { margin: 18px 0 23px; }
-      .hero .download { width: 100%; }
-      .showcase .device { width: min(67%, 244px); }
-      .feature-grid { grid-template-columns: 1fr; gap: 16px; }
-      .feature { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-        gap: 14px; align-items: center; padding: 17px 12px 0 17px; min-height: 235px; }
-      .feature p { font-size: .91rem; }
-      .feature img { align-self: start; }
-      .install .container { gap: 22px; }
+      .wrap { width: calc(100% - 36px); }
+      .stage { margin-inline: -18px; padding-inline: 18px; }
+      .hero .btn { width: 100%; }
     }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .slot { opacity: 1; transform: none; transition: none; } .float { transform: none; }
+      .live .eq i { animation: none; height: 70%; }
+    }
   </style>
 </head>
 <body>
-  <header class="masthead">
-    <div class="container">
-      <a class="brand" href="./"><img src="media/melo.png" width="38" height="38" alt="">Melo</a>
-      <nav aria-label="Navegación principal">
-        <a href="#capturas">Capturas</a>
-        <a href="#instalar">Instalación</a>
-      </nav>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="media/melo.png" width="32" height="32" alt="">Melo</a>
+      <a class="btn" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar</a>
     </div>
   </header>
+
   <main>
-    <section class="hero">
-      <div class="container">
-        <div>
-          <h1>Tu música <span>va contigo.</span></h1>
-          <p>Descubre canciones y artistas, arma tus playlists y guarda tus favoritas para escucharlas sin conexión.</p>
-          <a class="download" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK para Android</a>
-          <small class="version" data-version>APK oficial de Melo</small>
-        </div>
-        <figure class="showcase">
-          <div class="device">
-            <img src="media/reproductor.webp" width="720" height="1512" fetchpriority="high"
-              alt="Reproductor de Melo con carátula, controles de música y botones de Me gusta y añadir a playlist">
-          </div>
-          <figcaption>Capturas de Melo con música de demostración</figcaption>
-        </figure>
-      </div>
+    <section class="hero wrap">
+      <h1>Música que <span>va contigo.</span></h1>
+      <a class="btn" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar para Android</a>
+      <span class="version" data-version>APK oficial de Melo</span>
     </section>
-    <section class="features container" id="capturas">
-      <h2>Descubre y guarda lo que te gusta.</h2>
-      <div class="feature-grid">
-        <figure class="feature">
-          <figcaption>
-            <h3>Encuentra tu próxima canción</h3>
-            <p>Busca por título, artista o una frase de la letra. Explora canciones populares y álbumes.</p>
-          </figcaption>
-          <img src="media/buscar.webp" width="720" height="1512" loading="lazy"
-            alt="Pantalla de búsqueda de Melo con resultados de artistas y canciones">
-        </figure>
-        <figure class="feature">
-          <figcaption>
-            <h3>Tu biblioteca, a tu ritmo</h3>
-            <p>Reúne tus Me gusta, organiza tus playlists y descarga lo que quieras escuchar sin internet.</p>
-          </figcaption>
-          <img src="media/biblioteca.webp" width="720" height="1512" loading="lazy"
-            alt="Biblioteca de Melo con filtros y playlists de demostración">
-        </figure>
+
+    <section class="try wrap" id="prueba">
+      <p class="hint">Es la app de verdad. Toca una canción.</p>
+      <div class="stage" id="stage">
+
+        <div class="slot"><div class="float">
+          <div class="phone"><div class="screen">
+            <div class="bar"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Buscar música</div>
+            <div class="scroll" id="searchScroll">
+              <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input id="q" type="search" placeholder="Artista o canción" autocomplete="off" aria-label="Buscar música"></label>
+              <div id="searchOut"></div>
+            </div>
+          </div></div></div>
+          <h2>Busca</h2></div>
+
+        <div class="slot"><div class="float">
+          <div class="phone"><div class="screen player paused" id="player">
+            <div class="from">Reproduciendo desde<b id="from">Clásicos al piano</b></div>
+            <div class="art"><img id="art" src="media/covers/chopin.jpg" width="640" height="640" alt="Carátula"></div>
+            <div class="meta">
+              <div><b id="pTitle">Nocturno en mi bemol</b><span id="pArtist">Frédéric Chopin</span></div>
+              <button class="heart" id="heart" aria-label="Me gusta" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.5 3 5.5 6.2 5.5c2 0 3.2 1.1 3.8 2.2.6-1.100 1.800-2.200 3.800-2.200 3.200 0 5 3 3.700 6.300C19.500 16.400 12 21 12 21z"/></svg></button>
+            </div>
+            <div class="seek"><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posición">
+              <div class="times"><span id="cur">0:00</span><span id="dur">0:00</span></div></div>
+            <div class="ctrl">
+              <button id="shuf" aria-label="Aleatorio" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M16 3h5v5l-1.8-1.800L4 21.400 2.600 20 17.800 4.800zM4 3l5.500 5.500-1.400 1.400L2.600 4.400zM15 14.500l1.400-1.400 3.800 3.800L22 15v6h-6l1.800-1.800z"/></svg></button>
+              <button id="prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9.500 12z"/></svg></button>
+              <button class="go" id="play" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path id="playPath" d="M8 5v14l11-7z"/></svg></button>
+              <button id="next" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l10.500-7z"/></svg></button>
+              <button id="rep" aria-label="Repetir" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2zM17 17H7v-3l-4 4 4 4v-3h12v-6h-2z"/></svg></button>
+            </div>
+            <div class="err" id="err" role="status"></div>
+          </div></div></div>
+          <h2>Escucha</h2></div>
+
+        <div class="slot"><div class="float">
+          <div class="phone"><div class="screen lib">
+            <h3>Tu biblioteca</h3><p id="libCount">3 canciones</p>
+            <div class="scroll" id="libOut"></div>
+            <div class="mini" id="mini">
+              <img id="miniArt" src="media/covers/chopin.jpg" width="38" height="38" alt="">
+              <div><b id="miniTitle">Nocturno en mi bemol</b><small id="miniArtist">Frédéric Chopin</small></div>
+              <button id="miniPlay" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path id="miniPath" d="M8 5v14l11-7z"/></svg></button>
+            </div>
+            <div class="tabs" aria-hidden="true">
+              <span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10H3z"/></svg>Inicio</span>
+              <span class="cur"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>Biblioteca</span>
+              <span><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg>Descargas</span>
+            </div>
+          </div></div></div>
+          <h2>Organiza</h2></div>
+
       </div>
+      <audio id="audio" preload="none"></audio>
     </section>
+
     <section class="install" id="instalar">
-      <div class="container">
+      <div class="wrap">
         <div>
-          <h2>Instala Melo</h2>
-          <p>Si ya lo tienes, instala el APK encima de tu versión actual para conservar la biblioteca.</p>
-          <a class="download" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK</a>
+          <h2>Instálala en un minuto.</h2>
+          <ol class="steps">
+            <li>Descarga el APK</li>
+            <li>Ábrelo y permite la instalación</li>
+            <li>Listo</li>
+          </ol>
         </div>
-        <ol>
-          <li>Descarga el APK en tu teléfono Android.</li>
-          <li>Abre el archivo. Si Android lo solicita, autoriza las instalaciones desde tu navegador.</li>
-          <li>Confirma la instalación y abre Melo. Las próximas versiones aparecen en <strong>Perfil → Buscar actualizaciones</strong>.</li>
-        </ol>
+        <div>
+          <a class="btn" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK</a>
+          <span class="version" data-version>APK oficial de Melo</span>
+        </div>
       </div>
     </section>
   </main>
+
   <footer>
-    <div class="container">
-      <span>Melo para Android</span>
-      <div class="links">
-        <a href="privacy.html">Privacidad</a>
-        <a href="terms.html">Condiciones</a>
-      </div>
+    <div class="wrap">
+      <div class="row2"><span>Melo para Android</span><div class="links"><a href="privacy.html">Privacidad</a><a href="terms.html">Condiciones</a></div></div>
+      <small id="credits"></small>
     </div>
   </footer>
+
   <script>
+  (() => {
+    const TRACKS = [
+      { id: 'chopin', title: 'Nocturno en mi bemol', artist: 'Frédéric Chopin', file: 'chopin.mp3',
+        tint: '#12382f', credit: 'Nocturno en mi bemol (Chopin), Leopold Godowsky, 1913' },
+      { id: 'bach', title: 'Air (Suite n.º 3)', artist: 'Johann Sebastian Bach', file: 'bach.mp3',
+        tint: '#4a2a10', credit: 'Air (Bach), Victor Concert Orchestra, 1917' },
+      { id: 'debussy', title: 'Clair de lune', artist: 'Claude Debussy', file: 'debussy.mp3',
+        tint: '#1c2257', credit: 'Clair de lune (Debussy), Hotel Commodore Ensemble, 1927' }
+    ];
+    const $ = id => document.getElementById(id);
+    const audio = $('audio');
+    const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const fmt = s => isFinite(s) && s > 0 ? Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0') : '0:00';
+    const PLAY = 'M8 5v14l11-7z', PAUSE = 'M6 5h4v14H6zM14 5h4v14h-4z';
+
+    $('credits').textContent = 'Grabaciones históricas de dominio público (Internet Archive y Biblioteca del Congreso de EE. UU.): ' +
+      TRACKS.map(t => t.credit).join('; ') + '. Carátulas ilustradas para la demostración. Melo no incluye canciones.';
+
+    const state = { cur: 0, queue: TRACKS.map(t => t.id), from: 'Clásicos al piano', liked: new Set(), added: new Set(),
+      shuffle: false, repeat: false, q: '' };
+    const byId = id => TRACKS.find(t => t.id === id);
+    const track = () => byId(state.queue[state.cur]) || TRACKS[0];
+    const playing = () => !audio.paused;
+
+    const eq = '<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>';
+    const plusIcon = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>';
+
+    function renderSearch() {
+      const q = norm(state.q.trim());
+      const hits = TRACKS.filter(t => !q || norm(t.title + ' ' + t.artist).includes(q));
+      const out = $('searchOut');
+      if (!hits.length) { out.innerHTML = '<p class="empty">Sin resultados. Prueba «Chopin» o «Bach».</p>'; return; }
+      const artists = [...new Set(hits.map(t => t.artist))];
+      out.innerHTML = '<div class="label">Artistas</div>' + artists.map(a => {
+        const t = hits.find(x => x.artist === a);
+        return `<button class="row" data-artist="${esc(a)}"><img src="media/covers/${t.id}.jpg" width="42" height="42" alt=""><span><b>${esc(a)}</b><small>Compositor</small></span><span></span></button>`;
+      }).join('') + '<div class="label">Canciones</div>' + hits.map(t => {
+        const on = t.id === track().id;
+        const added = state.added.has(t.id);
+        return `<div class="row ${on ? 'on' : ''} ${on && playing() ? 'live' : ''}" data-id="${t.id}" role="button" tabindex="0">
+          <img src="media/covers/${t.id}.jpg" width="42" height="42" alt="">
+          <span><b>${esc(t.title)}</b><small>${esc(t.artist)}</small></span>
+          ${on && playing() ? eq : `<button class="act ${added ? 'done' : ''}" data-add="${t.id}" aria-label="${added ? 'En Mi playlist' : 'Añadir a Mi playlist'}">${added ? checkIcon : plusIcon}</button>`}</div>`;
+      }).join('');
+    }
+
+    function renderLibrary() {
+      const liked = [...state.liked], added = [...state.added];
+      const pls = [
+        { name: 'Tus Me gusta', ids: liked, sub: liked.length ? liked.length + (liked.length === 1 ? ' canción' : ' canciones') : 'Toca ♥ en el reproductor', cover: liked[0] || 'chopin' },
+        { name: 'Clásicos al piano', ids: TRACKS.map(t => t.id), sub: TRACKS.length + ' canciones', cover: 'bach' },
+        { name: 'Mi playlist', ids: added, sub: added.length ? added.length + (added.length === 1 ? ' canción' : ' canciones') : 'Añade con + en Buscar', cover: added[0] || 'debussy' }
+      ];
+      $('libOut').innerHTML = pls.map((p, n) =>
+        `<button class="row pl ${p.name === state.from && playing() ? 'live on' : ''}" data-pl="${n}" ${p.ids.length ? '' : 'aria-disabled="true"'}>
+          <img src="media/covers/${p.cover}.jpg" width="42" height="42" alt=""><span><b>${p.name}</b><small>${p.sub}</small></span>
+          ${p.name === state.from && playing() ? eq : '<span></span>'}</button>`).join('');
+      $('libOut').pls = pls;
+      const total = new Set([...TRACKS.map(t => t.id)]).size;
+      $('libCount').textContent = '3 playlists · ' + total + ' canciones';
+    }
+
+    function renderPlayer() {
+      const t = track();
+      $('art').src = 'media/covers/' + t.id + '.jpg';
+      $('pTitle').textContent = t.title; $('pArtist').textContent = t.artist;
+      $('from').textContent = state.from;
+      $('miniArt').src = 'media/covers/' + t.id + '.jpg';
+      $('miniTitle').textContent = t.title; $('miniArtist').textContent = t.artist;
+      const on = state.liked.has(t.id);
+      $('heart').classList.toggle('on', on); $('heart').setAttribute('aria-pressed', on);
+      document.documentElement.style.setProperty('--tint', t.tint);
+      $('shuf').classList.toggle('on', state.shuffle); $('shuf').setAttribute('aria-pressed', state.shuffle);
+      $('rep').classList.toggle('on', state.repeat); $('rep').setAttribute('aria-pressed', state.repeat);
+    }
+    function renderPlayState() {
+      const on = playing();
+      $('player').classList.toggle('playing', on); $('player').classList.toggle('paused', !on);
+      $('playPath').setAttribute('d', on ? PAUSE : PLAY); $('miniPath').setAttribute('d', on ? PAUSE : PLAY);
+      $('play').setAttribute('aria-label', on ? 'Pausar' : 'Reproducir');
+      $('miniPlay').setAttribute('aria-label', on ? 'Pausar' : 'Reproducir');
+      renderSearch(); renderLibrary();
+    }
+    const renderAll = () => { renderPlayer(); renderSearch(); renderLibrary(); renderPlayState(); };
+
+    function load(play) {
+      const t = track();
+      $('err').textContent = '';
+      audio.src = 'media/audio/' + t.file;
+      $('cur').textContent = '0:00'; $('dur').textContent = '0:00'; $('seek').value = 0;
+      renderPlayer();
+      if (play) audio.play().catch(() => {});
+      renderPlayState();
+    }
+    function playTrack(id, queue, from) {
+      if (queue) { state.queue = queue; state.from = from || state.from; }
+      const n = state.queue.indexOf(id);
+      if (n < 0) { state.queue = TRACKS.map(t => t.id); state.from = 'Clásicos al piano'; state.cur = state.queue.indexOf(id); }
+      else state.cur = n;
+      load(true);
+    }
+    function step(dir) {
+      const len = state.queue.length;
+      if (state.shuffle && len > 1) { let n; do { n = Math.floor(Math.random() * len); } while (n === state.cur); state.cur = n; }
+      else state.cur = (state.cur + dir + len) % len;
+      load(playing() || dir === 1 && audio.ended);
+    }
+    const toggle = () => { if (playing()) audio.pause(); else { if (!audio.src) load(false); audio.play().catch(() => {}); } };
+
+    // Búsqueda
+    $('q').addEventListener('input', e => { state.q = e.target.value; renderSearch(); });
+    $('searchOut').addEventListener('click', e => {
+      const add = e.target.closest('[data-add]');
+      if (add) { e.stopPropagation(); const id = add.dataset.add; state.added.has(id) ? state.added.delete(id) : state.added.add(id); renderSearch(); renderLibrary(); return; }
+      const art = e.target.closest('[data-artist]');
+      if (art) { state.q = art.dataset.artist; $('q').value = state.q; renderSearch(); return; }
+      const row = e.target.closest('[data-id]');
+      if (row) {
+        if (row.dataset.id === track().id && audio.src) toggle();
+        else playTrack(row.dataset.id, [row.dataset.id, ...TRACKS.map(t => t.id).filter(i => i !== row.dataset.id)], 'Resultados de búsqueda');
+      }
+    });
+    $('searchOut').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-id]')) { e.preventDefault(); e.target.click(); } });
+
+    // Biblioteca
+    $('libOut').addEventListener('click', e => {
+      const b = e.target.closest('[data-pl]'); if (!b) return;
+      const p = $('libOut').pls[+b.dataset.pl];
+      if (!p.ids.length) return;
+      playTrack(p.ids[0], p.ids.slice(), p.name);
+    });
+    $('miniPlay').addEventListener('click', toggle);
+
+    // Reproductor
+    $('play').addEventListener('click', toggle);
+    $('prev').addEventListener('click', () => { if (audio.currentTime > 3) audio.currentTime = 0; else step(-1); });
+    $('next').addEventListener('click', () => step(1));
+    $('shuf').addEventListener('click', () => { state.shuffle = !state.shuffle; renderPlayer(); });
+    $('rep').addEventListener('click', () => { state.repeat = !state.repeat; renderPlayer(); });
+    $('heart').addEventListener('click', () => { const id = track().id; state.liked.has(id) ? state.liked.delete(id) : state.liked.add(id); renderPlayer(); renderLibrary(); });
+    let seeking = false; const seek = $('seek');
+    seek.addEventListener('input', () => { seeking = true; if (audio.duration) $('cur').textContent = fmt(seek.value / 1000 * audio.duration); });
+    seek.addEventListener('change', () => { if (audio.duration) audio.currentTime = seek.value / 1000 * audio.duration; seeking = false; });
+
+    audio.addEventListener('play', renderPlayState); audio.addEventListener('pause', renderPlayState);
+    audio.addEventListener('loadedmetadata', () => { $('dur').textContent = fmt(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      if (seeking) return;
+      $('cur').textContent = fmt(audio.currentTime);
+      if (audio.duration) seek.value = audio.currentTime / audio.duration * 1000;
+    });
+    audio.addEventListener('ended', () => { if (state.repeat) { audio.currentTime = 0; audio.play(); } else step(1); });
+    audio.addEventListener('error', () => { if (audio.getAttribute('src')) $('err').textContent = 'No se pudo cargar el audio.'; });
+
+    audio.src = 'media/audio/' + track().file;
+    renderAll();
+
+    // Entrada al hacer scroll y movimiento suave de cada teléfono
+    const slots = [...document.querySelectorAll('.slot')];
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+      slots.forEach(s => io.observe(s));
+    } else slots.forEach(s => s.classList.add('in'));
+    const calm = matchMedia('(prefers-reduced-motion: reduce)');
+    let tick = false;
+    const move = () => {
+      tick = false; if (calm.matches) return;
+      slots.forEach((s, n) => {
+        const r = s.getBoundingClientRect();
+        const t = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+        s.querySelector('.float').style.setProperty('--py', Math.max(-36, Math.min(36, t * (26 + n * 14))).toFixed(1));
+      });
+    };
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(move); } }, { passive: true });
+    addEventListener('resize', move); move();
+
+    // Última versión publicada
     const repository = 'YuboxtY/melo-updates';
     fetch('https://raw.githubusercontent.com/' + repository + '/main/latest.json')
-      .then(response => response.ok ? response.json() : null)
+      .then(r => r.ok ? r.json() : null)
       .then(release => {
         if (!release || !/^v\d+\.\d+\.\d+$/.test(release.tag_name) ||
-            release.draft !== false || release.prerelease !== false ||
-            !Array.isArray(release.assets)) return;
+            release.draft !== false || release.prerelease !== false || !Array.isArray(release.assets)) return;
         const version = release.tag_name.slice(1);
         const filename = 'Melo-' + version + '-android-arm64.apk';
-        const expected = 'https://github.com/' + repository +
-          '/releases/download/' + release.tag_name + '/' + filename;
-        const apk = release.assets.find(asset => asset && asset.name === filename &&
-            asset.browser_download_url === expected);
-        if (!apk) return;
-        document.querySelectorAll('[data-download]').forEach(link => { link.href = expected; });
-        document.querySelector('[data-version]').textContent = 'APK oficial · Versión ' + version;
-      })
-      .catch(() => {});
+        const expected = 'https://github.com/' + repository + '/releases/download/' + release.tag_name + '/' + filename;
+        if (!release.assets.find(a => a && a.name === filename && a.browser_download_url === expected)) return;
+        document.querySelectorAll('[data-download]').forEach(l => { l.href = expected; });
+        document.querySelectorAll('[data-version]').forEach(v => { v.textContent = 'Versión ' + version; });
+      }).catch(() => {});
+  })();
   </script>
 </body>
 </html>
