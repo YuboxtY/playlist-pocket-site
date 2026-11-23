@@ -3,45 +3,178 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101715">
-  <meta name="description" content="Descarga e instala Melo para Android.">
-  <title>Descargar Melo para Android</title>
+  <meta name="theme-color" content="#101514">
+  <meta name="description" content="Descubre música, organiza tus playlists y guarda tus favoritas para escucharlas sin conexión. Descarga Melo para Android.">
+  <title>Melo · Tu música va contigo</title>
+  <link rel="icon" href="media/melo.png" type="image/png">
   <style>
-    :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; }
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, sans-serif;
+      --background: #101514;
+      --surface: #18201e;
+      --text: #f0f6f2;
+      --muted: #b3c4bc;
+      --mint: #4de9ad;
+      --line: #304039;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100svh; display: grid; place-items: center;
-      padding: 24px; background: radial-gradient(ellipse at 50% 0%, #203e33, #101715 65%);
-      color: #f2faf6; line-height: 1.5; }
-    main { max-width: 430px; width: 100%; padding: clamp(22px, 6vw, 36px);
-      background: #17231e; border: 1px solid #365044; border-radius: 24px; }
-    h1 { margin: 0; font-size: clamp(48px, 12vw, 65px); letter-spacing: -.06em; line-height: 1; }
-    .platform { margin: 8px 0 24px; color: #b6ccbf; }
-    .download { display: block; padding: 14px 18px; border-radius: 12px; text-align: center;
-      color: #042319; background: #43e7aa; text-decoration: none; font-weight: 750; }
-    .download:hover { background: #77f1c3; }
-    a:focus-visible { outline: 2px solid #f2faf6; outline-offset: 4px; }
-    ol { padding-inline-start: 22px; margin: 24px 0 20px; }
-    li + li { margin-top: 6px; }
-    footer { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-top: 16px;
-      border-top: 1px solid #365044; font-size: .85rem; }
-    footer a { color: #b6ccbf; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--background); color: var(--text); line-height: 1.55; }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--mint); outline-offset: 5px; }
+    .container { width: min(1120px, calc(100% - 56px)); margin-inline: auto; }
+    .masthead { border-bottom: 1px solid var(--line); }
+    .masthead .container, footer .container {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 16px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 1.3rem;
+      font-weight: 780; letter-spacing: -.045em; text-decoration: none; }
+    .brand img { width: 38px; height: 38px; border-radius: 10px; }
+    nav { display: flex; align-items: center; gap: 24px; color: var(--muted); }
+    nav a, footer a { text-decoration: none; }
+    nav a:hover, footer a:hover { color: var(--text); text-decoration: underline; }
+    .hero { overflow: hidden; border-bottom: 1px solid var(--line);
+      background: radial-gradient(ellipse at 77% 48%, #1d4538 0, #101514 53%); }
+    .hero .container { min-height: 618px; display: grid; grid-template-columns: minmax(0, 1.07fr) minmax(0, .93fr);
+      align-items: center; gap: 50px; padding-block: 54px; }
+    .hero h1 { max-width: 670px; font-size: clamp(3.3rem, 7.2vw, 7.2rem); font-weight: 780;
+      line-height: .96; letter-spacing: -.08em; margin: 0; text-wrap: balance; }
+    .hero h1 span { display: block; color: var(--mint); }
+    .hero p { color: var(--muted); max-width: 34rem; font-size: clamp(1.04rem, 2vw, 1.25rem);
+      margin: 25px 0 28px; }
+    .download { display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
+      padding: 12px 24px; border-radius: 12px; text-align: center;
+      color: #08251a; background: var(--mint); text-decoration: none; font-weight: 760; }
+    .download:hover { background: #8df4c9; }
+    .hero .version { display: block; min-height: 1.4em; margin-top: 10px; font-size: .85rem; color: var(--muted); }
+    .showcase { margin: 0; display: grid; justify-items: center; }
+    .device { width: min(100%, 260px); padding: 6px; border-radius: 30px; border: 1px solid #527267;
+      background: #0b100e; box-shadow: 0 26px 56px #05100b92; }
+    .device img { width: 100%; border-radius: 23px; }
+    .showcase figcaption { margin-top: 13px; color: var(--muted); font-size: .84rem; text-align: center; }
+    .features { padding-block: clamp(54px, 8vw, 90px); }
+    h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 750; line-height: 1.05;
+      letter-spacing: -.055em; margin: 0 0 24px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .feature { margin: 0; min-width: 0; display: grid; grid-template-columns: .8fr 1fr; gap: 14px;
+      grid-template-rows: auto; align-items: center; min-height: 352px;
+      padding: 25px 0 0 25px; border-radius: 20px; border: 1px solid var(--line); overflow: hidden;
+      background: radial-gradient(ellipse at bottom right, #213c34, var(--surface) 65%); }
+    .feature h3 { margin: 0 0 7px; font-size: clamp(1.25rem, 2.6vw, 2rem);
+      letter-spacing: -.04em; line-height: 1.15; }
+    .feature p { margin: 0; color: var(--muted); }
+    .feature img { width: min(95%, 238px); align-self: start; justify-self: end;
+      border-radius: 20px 20px 0 0; border: 1px solid #476359; border-bottom: 0;
+      margin: 0 10px 0 0; }
+    .install { background: var(--surface); border-block: 1px solid var(--line); }
+    .install .container { display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+      gap: 32px; padding-block: clamp(40px, 7vw, 70px); }
+    .install p { max-width: 37ch; margin: 0 0 20px; color: var(--muted); }
+    .install ol { margin: 0; padding-left: 22px; color: var(--muted); }
+    .install li { padding: 7px 0 7px 5px; }
+    .install li::marker { color: var(--mint); font-weight: bold; }
+    footer { color: var(--muted); font-size: .86rem; }
+    footer .links { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+    @media (max-width: 860px) {
+      .hero .container { min-height: 0; gap: 25px; }
+      .feature { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
+        padding: 21px 20px 0; gap: 16px; }
+      .feature img { align-self: center; margin: 0; width: min(100%, 225px); }
+    }
+    @media (max-width: 620px) {
+      .container { width: calc(100% - 36px); }
+      .masthead .container { padding-block: 12px; gap: 12px; }
+      nav { gap: 15px; font-size: .86rem; }
+      .hero .container, .install .container { grid-template-columns: minmax(0, 1fr); }
+      .hero .container { padding-block: 42px 34px; gap: 25px; }
+      .hero p { margin: 18px 0 23px; }
+      .hero .download { width: 100%; }
+      .showcase .device { width: min(67%, 244px); }
+      .feature-grid { grid-template-columns: 1fr; gap: 16px; }
+      .feature { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+        gap: 14px; align-items: center; padding: 17px 12px 0 17px; min-height: 235px; }
+      .feature p { font-size: .91rem; }
+      .feature img { align-self: start; }
+      .install .container { gap: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
+  <header class="masthead">
+    <div class="container">
+      <a class="brand" href="./"><img src="media/melo.png" width="38" height="38" alt="">Melo</a>
+      <nav aria-label="Navegación principal">
+        <a href="#capturas">Capturas</a>
+        <a href="#instalar">Instalación</a>
+      </nav>
+    </div>
+  </header>
   <main>
-    <h1>Melo</h1>
-    <p class="platform">Para Android</p>
-    <a class="download" id="download" href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK</a>
-    <ol>
-      <li>Abre el archivo descargado.</li>
-      <li>Si Android te lo pide, permite instalar desde tu navegador y confirma la instalación.</li>
-      <li>Si ya tienes Melo, instala encima para conservar tu biblioteca.</li>
-    </ol>
-    <footer>
-      <a href="privacy.html">Privacidad</a>
-      <a href="terms.html">Condiciones</a>
-    </footer>
+    <section class="hero">
+      <div class="container">
+        <div>
+          <h1>Tu música <span>va contigo.</span></h1>
+          <p>Descubre canciones y artistas, arma tus playlists y guarda tus favoritas para escucharlas sin conexión.</p>
+          <a class="download" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK para Android</a>
+          <small class="version" data-version>APK oficial de Melo</small>
+        </div>
+        <figure class="showcase">
+          <div class="device">
+            <img src="media/reproductor.webp" width="720" height="1512" fetchpriority="high"
+              alt="Reproductor de Melo con carátula, controles de música y botones de Me gusta y añadir a playlist">
+          </div>
+          <figcaption>Capturas de Melo con música de demostración</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="features container" id="capturas">
+      <h2>Descubre y guarda lo que te gusta.</h2>
+      <div class="feature-grid">
+        <figure class="feature">
+          <figcaption>
+            <h3>Encuentra tu próxima canción</h3>
+            <p>Busca por título, artista o una frase de la letra. Explora canciones populares y álbumes.</p>
+          </figcaption>
+          <img src="media/buscar.webp" width="720" height="1512" loading="lazy"
+            alt="Pantalla de búsqueda de Melo con resultados de artistas y canciones">
+        </figure>
+        <figure class="feature">
+          <figcaption>
+            <h3>Tu biblioteca, a tu ritmo</h3>
+            <p>Reúne tus Me gusta, organiza tus playlists y descarga lo que quieras escuchar sin internet.</p>
+          </figcaption>
+          <img src="media/biblioteca.webp" width="720" height="1512" loading="lazy"
+            alt="Biblioteca de Melo con filtros y playlists de demostración">
+        </figure>
+      </div>
+    </section>
+    <section class="install" id="instalar">
+      <div class="container">
+        <div>
+          <h2>Instala Melo</h2>
+          <p>Si ya lo tienes, instala el APK encima de tu versión actual para conservar la biblioteca.</p>
+          <a class="download" data-download href="https://github.com/YuboxtY/melo-updates/releases/latest">Descargar APK</a>
+        </div>
+        <ol>
+          <li>Descarga el APK en tu teléfono Android.</li>
+          <li>Abre el archivo. Si Android lo solicita, autoriza las instalaciones desde tu navegador.</li>
+          <li>Confirma la instalación y abre Melo. Las próximas versiones aparecen en <strong>Perfil → Buscar actualizaciones</strong>.</li>
+        </ol>
+      </div>
+    </section>
   </main>
+  <footer>
+    <div class="container">
+      <span>Melo para Android</span>
+      <div class="links">
+        <a href="privacy.html">Privacidad</a>
+        <a href="terms.html">Condiciones</a>
+      </div>
+    </div>
+  </footer>
   <script>
     const repository = 'YuboxtY/melo-updates';
     fetch('https://raw.githubusercontent.com/' + repository + '/main/latest.json')
@@ -54,10 +187,11 @@
         const filename = 'Melo-' + version + '-android-arm64.apk';
         const expected = 'https://github.com/' + repository +
           '/releases/download/' + release.tag_name + '/' + filename;
-        if (release.assets.some(asset => asset && asset.name === filename &&
-            asset.browser_download_url === expected)) {
-          document.getElementById('download').href = expected;
-        }
+        const apk = release.assets.find(asset => asset && asset.name === filename &&
+            asset.browser_download_url === expected);
+        if (!apk) return;
+        document.querySelectorAll('[data-download]').forEach(link => { link.href = expected; });
+        document.querySelector('[data-version]').textContent = 'APK oficial · Versión ' + version;
       })
       .catch(() => {});
   </script>
